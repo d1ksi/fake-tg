@@ -1,6 +1,8 @@
 import { log } from "../API/gql";
+
 import { actionAuthLogin } from "../store/authReducer"
 
+import { actionAuthLogin } from '../store/promiseReduser'
 
 
 export function actionFullLogin(login, password) {

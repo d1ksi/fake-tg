@@ -44,3 +44,4 @@ const actionRejected = (promiseName, error) => ({
    promiseName,
    error
 });
+
