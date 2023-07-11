@@ -11,7 +11,6 @@ export function actionFullRegister(login, password) {
          if (data?.data?.UserUpsert?.login) {
             await actionFullLogin(login, password);
             console.log(login, password)
-            // window.location.href = '/login';
          }
          if (data.errors && data.errors.length > 0) {
             // Ошибка: пользователь уже существует

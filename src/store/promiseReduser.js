@@ -25,6 +25,7 @@ export const actionPromise = (promiseName, promise) => {
    };
 }
 
+
 const actionPending = (promiseName) => ({
    type: "PROMISE",
    status: "PENDING",
