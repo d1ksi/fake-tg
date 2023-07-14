@@ -23,35 +23,36 @@ export const log = async (login, password) => {
 };
 
 
-export const getUserByLogin = async (login) => {
+export const getUserById = async (id) => {
   const UserFindOne = `query($query: String){
-      UserFindOne(query: $query) {
+    UserFindOne(query: $query) {
+      _id
+      login
+      nick
+      avatar{url}
+      chats{ 
         _id
-        login
-        nick
-        chats{
-          title
+        lastModified
+        members{
           _id
-          members{
+          login
+          nick
+          avatar{url}
+        }
+        messages{   
+          owner{
             _id
             login
             nick
             avatar{url}
           }
-        }
-        messages{   
-         owner{
-           _id
-           login
-           nick
-           avatar{url}
-         }
-         text    
-           }
-     }
+          text    
+            }
       }
-    }`;
-  return getGQL(UserFindOne, { "query": `[{ "login": "${login}" }]` })
+      
+    }
+  }`;
+  return getGQL(UserFindOne, { "query": `[{ "_id": "${id}" }]` })
 }
 
 
