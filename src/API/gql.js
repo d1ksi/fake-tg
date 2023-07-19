@@ -23,6 +23,18 @@ export const log = async (login, password) => {
 };
 
 
+export const checkUser = async (userid) => {
+  const UserFindOne = `query checkid($query: String){
+    UserFindOne(query: $query) {
+      _id
+      login
+      avatar{url}
+    }
+  }`;
+  return getGQL(UserFindOne, { "query": `[{"_id": "${userid}"}]` })
+}
+
+
 export const getUserById = async (id) => {
   const UserFindOne = `query($query: String){
     UserFindOne(query: $query) {

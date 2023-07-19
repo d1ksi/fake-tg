@@ -34,11 +34,11 @@ export default function BasicMenu() {
             <Box
                sx={{
                   "& > :not(style)": {
-                     m: 2
+                     m: "10px"
                   }
                }}
             >
-               <AccountCircleIcon fontSize="large" sx={{ color: "black" }} />
+               <AccountCircleIcon fontSize="large" sx={{ color: "black", width: "50px", height: "50px" }} />
             </Box>
          </Button>
          <Menu

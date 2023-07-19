@@ -1,48 +1,89 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import { CircularProgress } from '@mui/material';
-import { getUserById } from "../API/gql";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { actionPromise } from "../store/promiseReduser";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress, Link } from '@mui/material';
+import { getUserById } from '../API/gql';
+import { actionPromise } from '../store/promiseReduser';
+import { API_URL } from '../constants/chatApiUrl';
 
 const ChatList = () => {
    const dispatch = useDispatch();
-   const { status, payload } = useSelector((state) => state.auth);
-   const state = useSelector((state) => state?.promise?.getUserChatById);
+   const { payload } = useSelector(state => state.auth);
+   const state = useSelector(state => state?.promise?.getUserChatById);
 
-   console.log("payload:", payload);
-   console.log("state:", state);
+   const chats = state?.payload?.data?.UserFindOne?.chats;
+   // console.log(chats);
+   const isLoading = state?.status === 'PENDING';
+
+   const truncateString = (str, maxLength) => {
+      if (str.length <= maxLength) {
+         return str;
+      }
+      return str.substring(0, maxLength - 3) + '...';
+   };
+
 
    useEffect(() => {
       (async () => {
          if (payload && payload.sub && payload.sub.id) {
             const id = payload.sub.id;
-            const data = await dispatch(actionPromise('getUserChatById', getUserById(id)));
-            console.log("data:", data);
+            await dispatch(actionPromise('getUserChatById', getUserById(id)));
          }
       })();
    }, [dispatch, payload]);
+
    return (
-      <div className='chats'>
-         {
-            status === 'PENDING' || !status ? (<div className='circularaside'><CircularProgress /></div>) :
-               (<div className='allchat'>
-                  {payload &&
-                     payload.data &&
-                     payload.data.UserFindOne &&
-                     payload.data.UserFindOne.chats &&
-                     payload.data.UserFindOne.chats.length ? (
-                     payload.data.UserFindOne.chats.reverse().map(item => (
-                        <Link key={item._id}>{item._id}</Link>
-                     ))
-                  ) : (
-                     <div>1212</div>
-                  )}
-               </div>)
-         }
+      <div className="allchat">
+         {isLoading ? (
+            <CircularProgress />
+         ) : (
+            chats && chats.length ? (
+               chats.slice().reverse().map(chat => {
+                  let chatName;
+                  if (chat.members.length === 2) {
+                     chatName = chat.members[0].login;
+                  } else {
+                     chatName = "chat";
+                  }
+
+                  let lastMessage;
+                  if (chat.messages.length > 0) {
+                     const { owner, text } = chat.messages[0];
+                     lastMessage = `${owner.login}: ${text}`;
+                     lastMessage = truncateString(lastMessage, 20);
+                  } else {
+                     lastMessage = "write 1st sms";
+                  }
+
+                  let avatarUrl;
+                  if (chat.members.length === 2) {
+                     avatarUrl = chat.members[0]?.avatar?.url || "";
+                  } else {
+                     avatarUrl = "";
+                  }
+
+                  return (
+                     <Link key={chat._id} sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+                        <div className='chat'>
+                           {avatarUrl ? (
+                              <div className="avatar"><img src={`${API_URL}/${avatarUrl}`} className="chatimg" /></div>
+                           ) : (
+                              <div className="nochatimg">{chatName.charAt(0)}</div>
+                           )}
+                           <div className='chattitleandlastmessage'>
+                              <span>{chatName}</span>
+                              <span>{lastMessage}</span>
+                           </div>
+                        </div>
+                     </Link>
+                  );
+               })
+            ) : (
+               ''
+            )
+         )}
       </div>
-   )
+   );
 };
 
 export default ChatList;
+
