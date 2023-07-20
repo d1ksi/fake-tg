@@ -45,7 +45,7 @@ body {
 .allchat {
   background-color: #989898;
   height: 90vh;
-  width: 15vw;
+  min-width: 15vw;
   overflow-y: scroll;
 }
 
@@ -118,8 +118,9 @@ body {
 .messagemain {
   background-color: #989898;
   height: 90vh;
-  min-width: 71vw;
+  width: calc(100% - 15vw - 220px);
 }
+
 
 .messagemainwithcreate {
   background-color: #989898;
@@ -132,20 +133,12 @@ body {
   display: block;
   background-color: #989898;
   height: 90vh;
-  width: 14vw;
+  min-width: 220px;
 }
 
 .asidecreate {
   display: none;
 }
-
-
-.inputcreatechat {
-  display: flex;
-  align-items: center;
-}
-
-
 
 
 .userforcreate {

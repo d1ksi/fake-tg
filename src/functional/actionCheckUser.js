@@ -5,7 +5,7 @@ export function actionCheckUser(id) {
    return async (dispatch) => {
       try {
          const data = await checkUser(id);
-         console.log(data);
+         // console.log(data);
          if (data && data?.data?.UserFindOne) {
             return data.data.UserFindOne;
          }
