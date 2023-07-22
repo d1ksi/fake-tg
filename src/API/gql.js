@@ -23,7 +23,7 @@ export const log = async (login, password) => {
 };
 
 
-export const checkUser = async (userid) => {
+export const checkUser = async (userlogin) => {
   const UserFindOne = `query checkid($query: String){
     UserFindOne(query: $query) {
       _id
@@ -31,7 +31,7 @@ export const checkUser = async (userid) => {
       avatar{url}
     }
   }`;
-  return getGQL(UserFindOne, { "query": `[{"_id": "${userid}"}]` })
+  return getGQL(UserFindOne, { "query": `[{"login": "${userlogin}"}]` })
 }
 
 
@@ -68,7 +68,7 @@ export const getUserById = async (id) => {
 }
 
 
-export const chatCreate = async (id, title) => {
+export const chatCreate = async (arr) => {
   const ChatUpsert = `mutation createChat($chat: ChatInput){
       ChatUpsert(chat: $chat){
         _id
@@ -88,7 +88,7 @@ export const chatCreate = async (id, title) => {
         }
       }
     }`;
-  return getGQL(ChatUpsert, { "chat": { "members": [{ "_id": `${id}` }], "title": `${title}` } })
+  return getGQL(ChatUpsert, { "chat": { "members": arr } })
 }
 
 

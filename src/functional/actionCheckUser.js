@@ -1,10 +1,10 @@
 import { checkUser } from "../API/gql";
 
 
-export function actionCheckUser(id) {
+export function actionCheckUser(login) {
    return async (dispatch) => {
       try {
-         const data = await checkUser(id);
+         const data = await checkUser(login);
          // console.log(data);
          if (data && data?.data?.UserFindOne) {
             return data.data.UserFindOne;

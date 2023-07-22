@@ -8,25 +8,25 @@ import { actionCheckUser } from '../../functional/actionCheckUser';
 import { API_URL } from '../../constants/chatApiUrl';
 import { CustomAlert } from './CustomAlert';
 import { chatCreate } from '../../API/gql';
+import { actionPromise } from '../../store/promiseReduser';
 
 
 
 const FieldCreate = () => {
    const isButtonClicked = useSelector((state) => state.button.isButtonClicked);
-   const [id, setId] = useState("");
-   const [title, setTitle] = useState("");
+   const [login, setLogin] = useState("");
    const [userData, setUserData] = useState([]);
-   const [showTitleAlert, setShowTitleAlert] = useState(false);
    const [showUserAlert, setShowUserAlert] = useState(false);
    const dispatch = useDispatch();
 
    const clearInput = () => {
-      setId("");
+      setLogin("");
    };
 
    const checkUser = async () => {
       try {
-         const data = await dispatch(actionCheckUser(id));
+         const data = await dispatch(actionCheckUser(login));
+         console.log(data)
          if (data !== null) {
             if (userData.some((user) => user._id === data._id)) {
                alert("User already exists in the list.");
@@ -47,13 +47,16 @@ const FieldCreate = () => {
    const handleCreateChat = async () => {
       if (userIDs.length === 0) {
          setShowUserAlert(true);
-      } else if (!title.trim()) {
-         setShowTitleAlert(true);
       } else {
-         const data = await dispatch(chatCreate(userIDs, title))
-         console.log(data);
+         const data = await dispatch(actionPromise("chatCreate", chatCreate(userData.map((user) => ({ _id: user._id })))));
+         // console.log(data);
+         if (data.data && data.data.ChatUpsert) {
+            setLogin("");
+            setUserData([]);
+         }
       }
    };
+
 
 
 
@@ -61,7 +64,7 @@ const FieldCreate = () => {
    const handleDeleteUser = (userID) => {
       setUserData((prevData) => prevData.filter((user) => user._id !== userID));
    };
-   console.log(userIDs)
+   // console.log(userIDs)
 
    return (
       <div className={isButtonClicked ? 'asidecreateactive' : 'asidecreate'}>
@@ -70,9 +73,9 @@ const FieldCreate = () => {
                <TextField
                   sx={{ width: '200px' }}
                   type="text"
-                  value={id}
-                  onChange={(e) => setId(e.target.value)}
-                  label="User ID"
+                  value={login}
+                  onChange={(e) => setLogin(e.target.value)}
+                  label="User Login"
                   variant="outlined"
                />
             </Box>
@@ -81,23 +84,6 @@ const FieldCreate = () => {
                   <p className='username'>Find user</p><PersonAddIcon fontSize="medium" style={{ marginLeft: '10px' }} />
                </Button>
             </Stack>
-         </div>
-         <div className='titleforchat'>
-            <Stack sx={{ width: '200px', marginTop: '10px' }} spacing={2}>
-               {showTitleAlert && userIDs.length >= 2 && (
-                  <CustomAlert message="Enter the name of the chat" height="40px" />
-               )}
-            </Stack>
-            <Box>
-               <TextField
-                  sx={{ width: '200px', marginTop: '18px', display: userIDs.length >= 2 ? 'block' : 'none' }}
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  label="Chat Title"
-                  variant="outlined"
-               />
-            </Box>
          </div>
          <div className='userforcreate'>
             {userData.map((user) => (

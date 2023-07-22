@@ -4,6 +4,7 @@ import { CircularProgress, Link } from '@mui/material';
 import { getUserById } from '../API/gql';
 import { actionPromise } from '../store/promiseReduser';
 import { API_URL } from '../constants/chatApiUrl';
+import useSocket from '../hooks/useSocket';
 
 const ChatList = () => {
    const dispatch = useDispatch();
@@ -21,7 +22,6 @@ const ChatList = () => {
       return str.substring(0, maxLength - 3) + '...';
    };
 
-
    useEffect(() => {
       (async () => {
          if (payload && payload.sub && payload.sub.id) {
@@ -30,6 +30,11 @@ const ChatList = () => {
          }
       })();
    }, [dispatch, payload]);
+
+   const { message, chat } = useSocket();
+   console.log(message, chat)
+
+
 
    return (
       <div className="allchat">
@@ -47,7 +52,8 @@ const ChatList = () => {
 
                   let lastMessage;
                   if (chat.messages.length > 0) {
-                     const { owner, text } = chat.messages[0];
+                     const lastSms = chat.messages.length - 1;
+                     const { owner, text } = chat.messages[lastSms];
                      lastMessage = `${owner.login}: ${text}`;
                      lastMessage = truncateString(lastMessage, 20);
                   } else {
@@ -86,4 +92,3 @@ const ChatList = () => {
 };
 
 export default ChatList;
-

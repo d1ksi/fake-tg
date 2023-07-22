@@ -45,7 +45,7 @@ body {
 .allchat {
   background-color: #989898;
   height: 90vh;
-  min-width: 15vw;
+  min-width: 250px;
   overflow-y: scroll;
 }
 
@@ -118,14 +118,14 @@ body {
 .messagemain {
   background-color: #989898;
   height: 90vh;
-  width: calc(100% - 15vw - 220px);
+  width: calc(100% - 250px - 220px);
 }
 
 
 .messagemainwithcreate {
   background-color: #989898;
   height: 90vh;
-  min-width: 85vw;
+  min-width: calc(100% - 250px);
 }
 
 
