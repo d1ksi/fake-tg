@@ -5,6 +5,7 @@ function Header() {
    return (
       <div className="headerwraper">
          <ProfileMenu />
+         <p className="appname">FAKEgram</p>
          <CreateBtn />
       </div>
    );

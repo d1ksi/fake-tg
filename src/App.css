@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap');
+
+
 
 
 html,
@@ -13,7 +16,13 @@ body {
   height: 100%;
 }
 
-
+.appname {
+  font-family: 'Roboto Slab', serif;
+  font-size: 26px;
+  background-image: linear-gradient(90deg, black, rgb(47, 47, 252));
+  background-clip: text;
+  color: transparent;
+}
 
 .registerformwraper {
   display: flex;
@@ -42,12 +51,25 @@ body {
   display: flex;
 }
 
+.chats {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
 .allchat {
   background-color: #989898;
   height: 90vh;
   min-width: 250px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 }
+
+.circularprogress {
+  margin: auto;
+}
+
 
 .allchat::-webkit-scrollbar {
   width: 10px;
@@ -104,15 +126,23 @@ body {
 
 .chat {
   display: flex;
-  margin: 10px 10px;
+  margin: 5px 10px;
   border: 1px solid black;
+  border-radius: 20px;
   align-items: center;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 
 .chattitleandlastmessage {
+  color: rgb(75, 48, 48);
+  font-size: 18px;
+  font-weight: 600;
   display: flex;
   flex-direction: column;
-  padding: 10px 20px 5px 20px;
+  padding: 7px 20px 5px 20px;
 }
 
 .messagemain {
@@ -217,4 +247,27 @@ body {
   margin-left: 10px;
   font-size: 28px;
   background-color: rgb(119, 111, 101);
+}
+
+
+.chatms {
+  display: flex;
+  margin: 0px 40px 10px 10px;
+  height: 60px;
+  min-width: calc(100% - 250px - 220px);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatwithcreate {
+  display: flex;
+  margin: 0px 40px 10px 10px;
+  height: 60px;
+  min-width: calc(100% - 250px);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chattitle {
+  font-family: 'Roboto Slab', serif;
 }

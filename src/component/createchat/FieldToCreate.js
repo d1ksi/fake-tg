@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, TextField, Stack, Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -26,7 +26,7 @@ const FieldCreate = () => {
    const checkUser = async () => {
       try {
          const data = await dispatch(actionCheckUser(login));
-         console.log(data)
+         // console.log(data)
          if (data !== null) {
             if (userData.some((user) => user._id === data._id)) {
                alert("User already exists in the list.");
@@ -60,7 +60,7 @@ const FieldCreate = () => {
 
 
 
-   const userIDs = userData.map((user) => user._id);
+   const userIDs = useMemo(() => userData.map((user) => user._id), [userData]);
    const handleDeleteUser = (userID) => {
       setUserData((prevData) => prevData.filter((user) => user._id !== userID));
    };

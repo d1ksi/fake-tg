@@ -92,6 +92,20 @@ export const chatCreate = async (arr) => {
 }
 
 
+export const deleteChat = async (chatId, members) => {
+  const delChat = `mutation delChat($chat: ChatInput){
+    ChatUpsert(chat: $chat){
+      _id
+      members{
+        _id
+      }
+    }
+  }`;
+  return getGQL(delChat, { "chat": { "_id": chatId, "members": members } })
+}
+
+
+
 export const chatFindById = async (id) => {
   const ChatFindOne = `query getChatById($query: String){
       ChatFindOne(query: $query){

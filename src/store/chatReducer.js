@@ -2,6 +2,8 @@ export const setChats = (chats) => ({ type: 'SET_CHATS', chats });
 export const addChat = (chat) => ({ type: 'ADD_CHAT', chat });
 export const addMessages = (chatId, messages) => ({ type: 'ADD_MESSAGES', chatId, messages });
 
+
+
 const initialState = {};
 
 export const chatReducer = (state = initialState, action) => {
@@ -18,15 +20,15 @@ export const chatReducer = (state = initialState, action) => {
       };
    } else if (action.type === 'ADD_MESSAGES') {
       const { chatId, messages } = action;
+      const existingMessages = state[chatId]?.messages || [];
       return {
          ...state,
          [chatId]: {
             ...state[chatId],
-            messages: [...state[chatId].messages, ...messages],
+            messages: [...existingMessages, ...messages],
          },
       };
    } else {
       return state;
    }
 };
-
