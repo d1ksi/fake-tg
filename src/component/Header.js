@@ -1,11 +1,17 @@
 import ProfileMenu from "./ProfileMenu";
 import CreateBtn from "./createchat/CreateChatBtn";
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 
 function Header() {
    return (
       <div className="headerwraper">
          <ProfileMenu />
-         <p className="appname">FAKEgram</p>
+         <Box>
+            <Link href="/" color="inherit" underline="none">
+               <p className="appname">FAKEgram</p>
+            </Link>
+         </Box>
          <CreateBtn />
       </div>
    );

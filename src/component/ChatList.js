@@ -5,14 +5,19 @@ import { getUserById } from '../API/gql';
 import { actionPromise } from '../store/promiseReduser';
 import { API_URL } from '../constants/chatApiUrl';
 import { Link } from 'react-router-dom';
+import { resetButton } from '../store/buttonReducer';
 // import useSocket from '../hooks/useSocket';
+import { useMemo } from 'react';
+import { useChatSocket } from '../hooks/useChatSocket';
+
 
 const ChatList = () => {
    const dispatch = useDispatch();
    const { payload } = useSelector(state => state.auth);
    const state = useSelector(state => state?.promise?.getUserChatById);
 
-   const chats = state?.payload?.data?.UserFindOne?.chats;
+   // const chats = state?.payload?.data?.UserFindOne?.chats;
+   const chats = useMemo(() => state?.payload?.data?.UserFindOne.chats, [state]);
    // console.log(chats);
    const isLoading = state?.status === 'PENDING';
 
@@ -37,6 +42,12 @@ const ChatList = () => {
    // console.log("list sms", message);
    // console.log("list chat", chat);
 
+   const setBtn = () => {
+      dispatch(resetButton());
+   }
+
+
+   useChatSocket();
 
 
 
@@ -46,7 +57,7 @@ const ChatList = () => {
             <CircularProgress className='circularprogress' />
          ) : (
             chats && chats.length ? (
-               chats.slice().reverse().map(chat => {
+               chats.filter(chat => chat.members.length >= 2).slice().reverse().map(chat => {
                   let chatName;
                   if (chat.members.length === 2) {
                      chatName = chat.members[0].login;
@@ -69,7 +80,7 @@ const ChatList = () => {
                      avatarUrl = "";
                   }
                   return (
-                     <Link key={chat._id} className="chats" to={`/${chat._id}`} >
+                     <Link key={chat._id} className="chats" to={`/${chat._id}`} onClick={setBtn}>
                         <div className='chat'>
                            {avatarUrl ? (
                               <div className="avatar"><img src={`${API_URL}/${avatarUrl}`} className="chatimg" /></div>

@@ -1,20 +1,24 @@
 import { CircularProgress } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { chatFindById, deleteChat } from '../API/gql';
-// import { API_URL } from '../constants/chatApiUrl';
 import { actionPromise } from '../store/promiseReduser';
-// import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
+import MessageForm from './MessageForm';
+import { useNavigate } from "react-router";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 
 const MessageChat = () => {
    const isButtonClicked = useSelector((state) => state.button.isButtonClicked);
+   const settingsIconClicked = useSelector((state) => state.button.settingsIconClicked);
+   const navigate = useNavigate();
    const chatId = useParams();
    const dispatch = useDispatch();
    const state = useSelector(state => state?.promise?.OneChatByID);
@@ -32,35 +36,37 @@ const MessageChat = () => {
       })();
    }, [dispatch, payload, chatId]);
 
-   const chat = state?.payload?.data?.ChatFindOne;
-   const userId = payload?.sub?.id;
-   const membersInChat = chat?.members
-   const membersWithOutMe = membersInChat ? membersInChat.filter((id) => id !== userId) : [];
-
-   // const chatWithOutMe = useMemo(() => {
-   //    return membersInChat ? membersInChat.filter((id) => id !== userId) : [];
-   // }, [membersInChat, userId]);
-
-   // const chatWithOutMe = membersInChat ? membersInChat.filter((id) => id !== userId) : [];
+   const chat = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
+   const userId = useMemo(() => payload?.sub?.id, [payload]);
 
    const outFromChat = async () => {
       if (payload && payload.sub && payload.sub.id && chat && chat.members && chat._id) {
          const chatId = chat._id;
          const userId = payload.sub.id;
          const member = chat.members;
-         const membersWithOutMe = member.filter((id) => id !== userId);
+         const membersWithOutMe = member.filter((member) => member._id !== userId).map(({ _id }) => ({ _id }));
          console.log(membersWithOutMe)
          const out = await dispatch(actionPromise("Out from chat", deleteChat(chatId, membersWithOutMe)))
          console.log(out)
+         navigate('/');
       }
    };
 
-   console.log(membersWithOutMe)
-   console.log(membersInChat)
-   console.log(userId)
-   console.log(chat);
+   if (window.location.pathname === "/") {
+      return (
+         <div className={isButtonClicked ? 'messagemain' : 'messagemainwithcreate'}>
+            <p className='textinsteadofchat'>Start chatting with friends on<br />FAKEgram</p>
+         </div>
+      );
+   }
 
-   // const avatarUrl = chat ? chat.avatar : '';
+   const handleClick = () => {
+      dispatch({ type: 'TOGGLE_SETTINGS_ICON' });
+   };
+
+   // console.log(chat)
+
+
 
    return (
       <div className={isButtonClicked ? 'messagemain' : 'messagemainwithcreate'}>
@@ -68,32 +74,36 @@ const MessageChat = () => {
             <CircularProgress className='circularprogress' />
          ) : chat ? (
             <div className={isButtonClicked ? 'chatms' : 'chatwithcreate'}>
-               {/* {avatarUrl ? (
-                  <div className="avatar"><img src={`${API_URL}/${avatarUrl}`} className="chatimg" /></div>
-               ) : (
-                  <div className="nochatimg"><NoPhotographyIcon /></div>
-               )} */}
                <Box>
                   <Link href="/" color="inherit" underline="none">
                      <SpeakerNotesIcon sx={{ fontSize: "30px", cursor: "pointer" }} />
                   </Link>
                </Box>
                <p className='chattitle'>
-                  {chat.title && chat.title !== "undefined" && chat.title.length > 0
-                     ? chat.title
-                     : chat.members && chat.members.length === 2
-                        ? chat.members[0].login
-                        : "Group"}
+                  {
+                     chat.title && chat.title !== "undefined" && chat.title.length > 0
+                        ? chat.title
+                        : chat.members && chat.members.length === 2
+                           ? chat.members[0].login.charAt(0).toUpperCase() + chat.members[0].login.slice(1)
+                           : "Group"
+                  }
                </p>
-               <div style={{ display: "flex" }}>
-                  {chat.members && chat.members.length > 2 ? <SettingsIcon sx={{ marginRight: "15px", cursor: "pointer" }} /> : null}
+               {chat && chat.owner && chat.owner._id === userId ? <div style={{ display: "flex" }}>
+                  {chat.members && chat.members.length > 2 ? (
+                     settingsIconClicked ? (
+                        <CloseIcon sx={{ marginRight: "20px", cursor: "pointer" }} onClick={handleClick} />
+                     ) : (
+                        <SettingsIcon sx={{ marginRight: "20px", cursor: "pointer" }} onClick={handleClick} />
+                     )
+                  ) : null}
                   <LogoutIcon sx={{ cursor: "pointer" }} onClick={outFromChat} />
-               </div>
+               </div> : <p className='adminname'>Admin: {chat.owner.login}</p>}
             </div>
          ) : (
-            <p className='textinsteadofchat'>Start chatting with friends on FAKEgram</p>
+            <p className='textinsteadofchat'>Start chatting with friends on<br />FAKEgram</p>
          )
          }
+         <MessageForm />
       </div >
    );
 };

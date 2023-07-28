@@ -5,22 +5,32 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { actionAuthLogout } from "../store/authReducer";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router";
 
 
 export default function BasicMenu() {
    const [anchorEl, setAnchorEl] = React.useState(null);
    const open = Boolean(anchorEl);
    const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const { payload } = useSelector(state => state.auth);
+   const userId = React.useMemo(() => payload?.sub?.id, [payload]);
+
+
+
+
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
    };
    const handleClose = () => {
+      navigate(`/profile/${userId}`)
       setAnchorEl(null);
    };
    const Logout = () => {
       dispatch(actionAuthLogout());
    }
+
 
    return (
       <div>

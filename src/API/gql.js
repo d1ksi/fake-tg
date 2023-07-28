@@ -98,10 +98,52 @@ export const deleteChat = async (chatId, members) => {
       _id
       members{
         _id
+        login
       }
     }
   }`;
   return getGQL(delChat, { "chat": { "_id": chatId, "members": members } })
+}
+
+export const deleteOneUser = async (chatId, arr) => {
+  const ChatUpsert = `mutation ($chat: ChatInput){
+      ChatUpsert(chat: $chat){
+        _id
+        members{
+          _id
+          login
+        }
+      }
+    }`;
+  return getGQL(ChatUpsert, { "chat": { "_id": chatId, "members": arr } })
+}
+
+
+export const switchTitle = async (chatId, title) => {
+  const swTitle = `mutation ($chat: ChatInput){
+    ChatUpsert(chat: $chat){
+      _id
+      title
+    }
+  }`;
+  return getGQL(swTitle, { "chat": { "_id": chatId, "title": title } })
+}
+
+
+export const deleteMessage = async (chatId, message) => {
+  const deleteMsg = `mutation ($chat: ChatInput){
+    ChatUpsert(chat: $chat){
+      _id
+      messages{
+        _id
+        text
+        owner{
+          login
+        }
+      }
+    }
+  }`;
+  return getGQL(deleteMsg, { "chat": { "_id": chatId, "messages": message } })
 }
 
 
@@ -110,9 +152,14 @@ export const chatFindById = async (id) => {
   const ChatFindOne = `query getChatById($query: String){
       ChatFindOne(query: $query){
         _id
+        owner{
+          _id
+          login
+        }
         lastModified
         lastMessage{
           owner{
+            _id
             login
             nick
             avatar{url}
@@ -131,6 +178,7 @@ export const chatFindById = async (id) => {
         messages{
           _id
           owner{
+            _id
             login
             nick
             avatar{url}
@@ -156,5 +204,25 @@ export const messageCreate = async (chatId, message) => {
         text
       }
     }`;
-  return getGQL(MessageUpsert, { "message": { "chat": { "_id": `${chatId}` }, "text": `${message}` } })
+  return getGQL(MessageUpsert, { "message": { "chat": { "_id": chatId }, "text": message } })
 }
+
+
+
+export const messagesById = (msgId) => {
+  const MessageFind = `query ($query: String) {
+    MessageFindOne(query: $query) {
+      _id
+      createdAt
+      owner{
+        _id
+        login
+        nick
+        avatar{url}
+      }
+      text
+      media{url}
+    }
+  }`;
+  return getGQL(MessageFind, { "query": `[{ "_id": "${msgId}" }]` });
+};

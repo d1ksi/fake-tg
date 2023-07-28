@@ -1,6 +1,6 @@
 export const setChats = (chats) => ({ type: 'SET_CHATS', chats });
 export const addChat = (chat) => ({ type: 'ADD_CHAT', chat });
-export const addMessages = (chatId, messages) => ({ type: 'ADD_MESSAGES', chatId, messages });
+export const addMessages = (messages, chatId) => ({ type: 'ADD_MESSAGES', messages, chatId });
 
 
 
@@ -19,7 +19,7 @@ export const chatReducer = (state = initialState, action) => {
          [chat._id]: chat,
       };
    } else if (action.type === 'ADD_MESSAGES') {
-      const { chatId, messages } = action;
+      const { messages, chatId } = action;
       const existingMessages = state[chatId]?.messages || [];
       return {
          ...state,

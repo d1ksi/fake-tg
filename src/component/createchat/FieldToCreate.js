@@ -9,6 +9,7 @@ import { API_URL } from '../../constants/chatApiUrl';
 import { CustomAlert } from './CustomAlert';
 import { chatCreate } from '../../API/gql';
 import { actionPromise } from '../../store/promiseReduser';
+import { resetButton } from "../../store/buttonReducer"
 
 
 
@@ -53,10 +54,10 @@ const FieldCreate = () => {
          if (data.data && data.data.ChatUpsert) {
             setLogin("");
             setUserData([]);
+            dispatch(resetButton());
          }
       }
    };
-
 
 
 
