@@ -461,3 +461,44 @@ body {
   margin: 2px 10px 5px 10px;
   font-size: 18px;
 }
+
+.chatsendphoto {
+  width: 200px;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatmessageimg {
+  margin: 5px;
+  width: 95%;
+  height: 100%;
+}
+
+
+.imgPreview {
+  width: 100px;
+  height: 100px;
+}
+
+.imgsWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 0 10px;
+
+}
+
+.imgWrapper {
+  position: relative;
+}
+
+.CloseIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+}

@@ -58,6 +58,7 @@ const ChatList = () => {
          ) : (
             chats && chats.length ? (
                chats.filter(chat => chat.members.length >= 2).slice().reverse().map(chat => {
+                  // console.log("chat", chat)
                   let chatName;
                   if (chat.members.length === 2) {
                      chatName = chat.members[0].login;

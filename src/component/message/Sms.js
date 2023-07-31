@@ -10,7 +10,6 @@ import { useChatSocket } from '../../hooks/useChatSocket'
 
 
 
-
 const Sms = () => {
    const state = useSelector(state => state?.promise?.OneChatByID);
    const { payload } = useSelector(state => state.auth);
@@ -28,6 +27,7 @@ const Sms = () => {
    useChatSocket();
 
 
+
    return (
       <>
          {chat && chat.messages && chat.messages.length > 0 ? (
@@ -39,13 +39,17 @@ const Sms = () => {
                            <div className={message.owner._id === userId ? 'mymsg' : 'usermsg'}>
                               <div className='msg'>
                                  <p className='owner'>{message.owner.login}</p>
-                                 {message.media && message.media.url && message.media.url.length > 0 ? (
-                                    message.media.map((img) => (
-                                       <div className="avatar">
-                                          <img src={`${API_URL}/${img.url}`} className="chatimg" />
-                                       </div>
-                                    ))
-                                 ) : null}
+                                 <div>
+                                    {message.media && message.media.length > 0 ? (
+                                       <>
+                                          {message.media.map((photo) =>
+                                             <div className="chatsendphoto">
+                                                <img src={`${API_URL}/${photo.url}`} className="chatmessageimg" alt='Error' />
+                                             </div>
+                                          )}
+                                       </>
+                                    ) : null}
+                                 </div>
                                  <p className='text'>{message.text}</p>
                               </div>
                               {message.owner._id === userId ? <DeleteIcon sx={{ color: "black", cursor: "pointer" }} onClick={() => handleDeleteMessage(message._id)} /> : null}
@@ -57,8 +61,9 @@ const Sms = () => {
             </div>
          ) : null}
       </>
-   );
+   )
 }
 
-
 export default Sms
+
+
