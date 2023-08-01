@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { API_URL } from '../constants/chatApiUrl';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 import { Box, TextField, Stack, Button } from '@mui/material';
 import { useState, useMemo } from 'react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
 import { actionPromise } from '../store/promiseReduser';
 import { switchTitle } from '../API/gql';
 import UserInChat from './UserInChat';
@@ -44,20 +43,17 @@ const MessageForm = () => {
                <div className='chatavatar'>
                   {avatarUrl && avatarMembers ? (
                      <div className="avatarchat">
-                        <img src={`${API_URL}/${avatarUrl}`} className="chatphoto" />
+                        <img src={`${API_URL}/${avatarUrl}`} className="chatphoto" alt="" />
                      </div>
                   ) : avatarMembers ? (
                      <div className="avatarchat">
-                        <img src={`${API_URL}/${avatarMembers}`} className="chatphoto" />
+                        <img src={`${API_URL}/${avatarMembers}`} className="chatphoto" alt="" />
                      </div>
                   ) : (
                      <div className="noimg">
-                        <AddPhotoAlternateIcon sx={{ fontSize: "34px" }} />
+                        <Diversity3Icon sx={{ fontSize: "34px" }} />
                      </div>
                   )}
-                  <Stack spacing={2} direction="row">
-                     <Button variant="text" sx={{ color: 'black', cursor: "pointer", fontWeight: "600" }}>Add photo<CameraswitchIcon sx={{ marginLeft: "10px" }} /></Button>
-                  </Stack>
                </div>
                {chat && chat.members && chat.members.length > 2 ? <Box sx={{ display: "flex", alignItems: "center", marginLeft: "40px" }}>
                   <TextField

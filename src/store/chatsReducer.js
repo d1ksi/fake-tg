@@ -29,7 +29,6 @@ export const chatsReducer = (state = {}, action) => {
       const updatedMessages = [...chat.messages, message];
       const updatedChat = { ...chat, messages: updatedMessages };
       return { ...state, [chatId]: updatedChat };
-
    }
 
    if (action.type === 'DEL_CHAT') {

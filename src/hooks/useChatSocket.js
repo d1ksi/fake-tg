@@ -25,12 +25,6 @@ export const useChatSocket = () => {
          const promiseMessage = await dispatch(actionPromise("getChatById", messagesById(msg._id)));
          const newMessage = promiseMessage?.data?.MessageFindOne;
          console.log("newMessage", newMessage)
-         // const newMessage = {
-         //    createdAt: msg.createdAt,
-         //    owner: msg.owner,
-         //    text: msg.text,
-         //    _id: msg._id
-         // }
          const chatId = msg?.chat?._id;
          dispatch(addMessage(newMessage, chatId));
 

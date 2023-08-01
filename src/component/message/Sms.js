@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { API_URL } from '../../constants/chatApiUrl';
 import { deleteMessage } from '../../API/gql';
 import { actionPromise } from '../../store/promiseReduser';
-import { useChatSocket } from '../../hooks/useChatSocket'
+// import { useChatSocket } from '../../hooks/useChatSocket'
 
 
 
@@ -24,7 +24,7 @@ const Sms = () => {
       }
    };
 
-   useChatSocket();
+   // useChatSocket();
 
 
 
