@@ -1,4 +1,6 @@
-export const chatsReducer = (state = {}, action) => {
+const stateDefault = {};
+
+export const chatsReducer = (state = stateDefault, action) => {
    if (action.type === 'ADD_CHATS') {
       const newState = { ...state };
       action.chats.forEach(chat => {
@@ -24,11 +26,13 @@ export const chatsReducer = (state = {}, action) => {
    }
 
    if (action.type === 'ADD_MESSAGE') {
-      const { chatId, message } = action;
+      const { msg, chatId } = action;
       const chat = state[chatId];
-      const updatedMessages = [...chat.messages, message];
+      const updatedMessages = [...chat.messages, msg];
       const updatedChat = { ...chat, messages: updatedMessages };
-      return { ...state, [chatId]: updatedChat };
+      const newState = { ...state, [chatId]: updatedChat };
+      console.log("newState", newState);
+      return newState
    }
 
    if (action.type === 'DEL_CHAT') {
@@ -38,12 +42,11 @@ export const chatsReducer = (state = {}, action) => {
       const updatedChat = { ...chat, members: updatedMembers };
       return { ...state, [chatId]: updatedChat };
    }
-
    return state;
 };
 
 export const addChats = (chats) => ({ type: 'ADD_CHATS', chats });
 export const addChat = (chat, chatId) => ({ type: 'ADD_CHAT', chat });
 export const addMessages = (messages, chatId) => ({ type: 'ADD_MESSAGES', messages, chatId });
-export const addMessage = (message, chatId) => ({ type: 'ADD_MESSAGE', message, chatId });
+export const addMessage = (msg, chatId) => ({ type: 'ADD_MESSAGE', msg, chatId });
 export const deleteChatAction = (memberId, chatId) => ({ type: 'DEL_CHAT', memberId, chatId });

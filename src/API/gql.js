@@ -222,3 +222,32 @@ export const messagesById = (msgId) => {
   }`;
   return getGQL(MessageFind, { "query": `[{ "_id": "${msgId}" }]` });
 };
+
+
+
+export const getMessagesByChatId = (chatId) => {
+  const MessageFind = `query ($query: String) {
+  MessageFind(query: $query) {
+    _id
+    createdAt
+    owner{
+      _id
+      login
+      nick
+      avatar{url}
+    }
+    text
+    media{url}
+  }
+}`;
+  return getGQL(MessageFind, { "query": `[{ "chat._id": "${chatId}" }]` });
+};
+
+
+
+export const getCountMessagesByChatId = (chatId) => {
+  const MessageCount = `query count ($query: String){
+  MessageCount(query:$query)
+}`;
+  return getGQL(MessageCount, { "query": `[{ "chat._id": "${chatId}" }]` });
+};

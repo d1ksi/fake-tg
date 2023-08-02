@@ -4,14 +4,14 @@ import { promiseReducer } from "./promiseReduser";
 import { authReducer } from './authReducer';
 import { localStoredReduser } from './localStoredReduser';
 import { buttonReducer } from './buttonReducer'
-import { chatReducer } from './chatReducer';
+import { chatsReducer } from './chatsReducer';
 
 
 const reducers = combineReducers({
    promise: promiseReducer,
    auth: localStoredReduser(authReducer, 'auth'),
    button: buttonReducer,
-   chat: chatReducer,
+   chat: chatsReducer,
 });
 
 export const store = createStore(

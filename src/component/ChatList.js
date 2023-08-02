@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { resetButton } from '../store/buttonReducer';
 import { useChatSocket } from '../hooks/useChatSocket';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import { addChats } from '../store/chatsReducer';
 
 const ChatList = () => {
    const dispatch = useDispatch();
@@ -28,7 +29,8 @@ const ChatList = () => {
       (async () => {
          if (payload && payload.sub && payload.sub.id) {
             const id = payload.sub.id;
-            await dispatch(actionPromise('getUserChatById', getUserById(id)));
+            const userById = await dispatch(actionPromise('getUserChatById', getUserById(id)));
+            dispatch(addChats(userById.data.UserFindOne.chats));
          }
       })();
    }, [dispatch, payload]);

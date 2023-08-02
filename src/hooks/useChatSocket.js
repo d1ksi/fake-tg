@@ -21,14 +21,24 @@ export const useChatSocket = () => {
       socket.on('jwt_fall', error => console.log('jwt_fall', error));
 
       socket.on('msg', async msg => {
-         console.log("msg", msg)
+
+         // console.log("msg", msg)
          const promiseMessage = await dispatch(actionPromise("getChatById", messagesById(msg._id)));
          const newMessage = promiseMessage?.data?.MessageFindOne;
-         console.log("newMessage", newMessage)
+         // // console.log("newMessage", newMessage)
          const chatId = msg?.chat?._id;
          dispatch(addMessage(newMessage, chatId));
-
       });
+
+      socket.on('msg', async msg => {
+         // console.log(msg);
+         // const idOwnerMessage = msg.owner._id;
+         const chatId = msg?.chat?._id;
+         dispatch(addMessage(msg, chatId));
+      });
+
+
+
 
       socket.on('chat', async chat => {
          const promiseChat = await dispatch(actionPromise("promiseGetChatById", chatFindById(chat._id)));
