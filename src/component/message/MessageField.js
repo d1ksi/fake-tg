@@ -98,8 +98,7 @@ const MessageField = () => {
    const handleSubmit = async () => {
       const imgId = arrImg.map(({ _id }) => ({ _id: _id }));
       if (input || imgId.length > 0) {
-         const msg = await dispatch(actionPromise("New message", messageCreate(chat._id, input, imgId)));
-         console.log("msg", msg)
+         await dispatch(actionPromise("New message", messageCreate(chat._id, input, imgId)));
          setInput("");
          setArrImg([]);
       }

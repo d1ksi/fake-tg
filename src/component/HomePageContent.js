@@ -1,6 +1,6 @@
-import ChatList from "../component/ChatList"
+import ChatList from "./ChatList"
 import FieldCreate from "./createchat/FieldToCreate";
-import MessageChat from "../component/MessageFromOneChat"
+import MessageChat from "./MessageFromOneChat"
 
 
 const HomePageContent = () => {

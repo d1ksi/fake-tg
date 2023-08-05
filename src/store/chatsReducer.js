@@ -13,25 +13,12 @@ export const chatsReducer = (state = stateDefault, action) => {
    if (action.type === 'ADD_CHAT') {
       return { ...state, [action.chat._id]: action.chat };
    }
-
-   if (action.type === 'ADD_MESSAGES') {
-      const { chatId, messages } = action;
-      const chat = state[chatId];
-      if (chat) {
-         const chatMessages = chat.messages || []
-         const updatedChat = { ...chat, messages: [...chatMessages, ...messages] };
-         return { ...state, [chatId]: updatedChat };
-      }
-      return state;
-   }
-
    if (action.type === 'ADD_MESSAGE') {
       const { msg, chatId } = action;
       const chat = state[chatId];
       const updatedMessages = [...chat.messages, msg];
       const updatedChat = { ...chat, messages: updatedMessages };
       const newState = { ...state, [chatId]: updatedChat };
-      console.log("newState", newState);
       return newState
    }
 
@@ -46,7 +33,7 @@ export const chatsReducer = (state = stateDefault, action) => {
 };
 
 export const addChats = (chats) => ({ type: 'ADD_CHATS', chats });
-export const addChat = (chat, chatId) => ({ type: 'ADD_CHAT', chat });
+export const addChat = (chat) => ({ type: 'ADD_CHAT', chat });
 export const addMessages = (messages, chatId) => ({ type: 'ADD_MESSAGES', messages, chatId });
 export const addMessage = (msg, chatId) => ({ type: 'ADD_MESSAGE', msg, chatId });
 export const deleteChatAction = (memberId, chatId) => ({ type: 'DEL_CHAT', memberId, chatId });

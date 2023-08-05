@@ -50,7 +50,6 @@ const FieldCreate = () => {
          setShowUserAlert(true);
       } else {
          const data = await dispatch(actionPromise("chatCreate", chatCreate(userData.map((user) => ({ _id: user._id })))));
-         // console.log(data);
          if (data.data && data.data.ChatUpsert) {
             setLogin("");
             setUserData([]);

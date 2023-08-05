@@ -131,20 +131,15 @@ export const switchTitle = async (chatId, title) => {
   return getGQL(swTitle, { "chat": { "_id": chatId, "title": title } })
 }
 
-export const deleteMessage = async (chatId, message) => {
-  const deleteMsg = `mutation ($chat: ChatInput){
-    ChatUpsert(chat: $chat){
+export const userUpsert = async (userId, nick, avatar) => {
+  const user = `mutation userSet($user: UserInput){
+    UserUpsert(user: $user){
       _id
-      messages{
-        _id
-        text
-        owner{
-          login
-        }
-      }
+      nick
+      avatar{url}
     }
   }`;
-  return getGQL(deleteMsg, { "chat": { "_id": chatId, "messages": message } })
+  return getGQL(user, { "user": { "_id": userId, "nick": nick, "avatar": { "_id": avatar } } });
 }
 
 export const chatFindById = async (id) => {
@@ -195,6 +190,7 @@ export const messageCreate = async (chatId, message, mediaId) => {
       MessageUpsert(message: $message){
         _id
         owner{
+          _id
           nick
           login
           avatar{url}
@@ -223,8 +219,6 @@ export const messagesById = (msgId) => {
   return getGQL(MessageFind, { "query": `[{ "_id": "${msgId}" }]` });
 };
 
-
-
 export const getMessagesByChatId = (chatId) => {
   const MessageFind = `query ($query: String) {
   MessageFind(query: $query) {
@@ -242,8 +236,6 @@ export const getMessagesByChatId = (chatId) => {
 }`;
   return getGQL(MessageFind, { "query": `[{ "chat._id": "${chatId}" }]` });
 };
-
-
 
 export const getCountMessagesByChatId = (chatId) => {
   const MessageCount = `query count ($query: String){

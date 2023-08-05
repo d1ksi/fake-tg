@@ -61,8 +61,8 @@ body {
 
 .allchat {
   background-color: #989898;
-  height: 90vh;
   min-width: 250px;
+  height: calc(100vh - 90px);
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -149,7 +149,7 @@ body {
 
 .messagemain {
   background-color: #989898;
-  height: 90vh;
+  height: calc(100vh - 90px);
   width: calc(100% - 250px - 220px);
   display: flex;
   flex-direction: column;
@@ -158,7 +158,8 @@ body {
 
 .messagemainwithcreate {
   background-color: #989898;
-  height: 90vh;
+  height: calc(100vh - 90px);
+  max-height: 1066px;
   min-width: calc(100% - 250px);
   display: flex;
   flex-direction: column;
@@ -275,7 +276,7 @@ body {
 }
 
 .chattitle {
-  font-family: 'Roboto Slab', serif;
+  -family: 'Roboto Slab', serif;
   font-size: 20px;
 }
 
@@ -500,5 +501,72 @@ body {
   position: absolute;
   top: 0;
   right: 0;
+}
 
+.nickName {
+  width: 220px;
+  height: 30px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.profSet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profset {
+  height: calc(100vh - 90px);
+}
+
+.chatphoto {
+  max-width: 450px;
+  max-height: 450px;
+}
+
+.usergodchat {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  font-size: 28px;
+  background-color: rgb(150, 148, 148);
+  overflow: hidden
+}
+
+
+.usersettings {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  background-color: #989898;
+  height: calc(100vh - 90px);
+  max-height: 1026px;
+  min-width: calc(100% - 250px);
+  display: flex;
+  flex-direction: column;
+}
+
+
+.userNickName {
+  font-family: 'Roboto Slab', serif;
+  font-size: 26px;
+  background-image: linear-gradient(90deg, black, rgb(47, 47, 252));
+  background-clip: text;
+  color: transparent;
 }
