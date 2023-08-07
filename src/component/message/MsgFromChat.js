@@ -1,17 +1,16 @@
 import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
-import Sms from './Sms';
+import Sms from './OneMessage';
+import { useParams } from 'react-router';
 
 
 const MsgFromChat = () => {
-   const state = useSelector(state => state?.promise?.OneChatByID);
-   const chat = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
-   // console.log(chat);
+   const chatId = useParams();
+   const allMessage = useSelector((state) => state?.chat[chatId]?.messages) || [];
 
    return (
-      <>
-         {chat && chat.messages && chat.messages.length > 0 ? <div className='messagefromonechat'><Sms /></div> : <div className='messagefromonechat'><p className='textinsteadofchat'>Do not be pussy, send 1st<br /> message</p></div>}
-      </>
+      <div className='messagefromonechat'>
+         <Sms allMessage={allMessage} />
+      </div>
    )
 }
 

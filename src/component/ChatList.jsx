@@ -14,7 +14,7 @@ const ChatList = () => {
    // console.log("state", state)
    const isLoading = state?.status === 'PENDING';
 
-   const chats = state?.payload?.data?.UserFindOne?.chats;
+   // const chats = state?.payload?.data?.UserFindOne?.chats;
    // console.log("chats", chats)
 
    useEffect(() => {

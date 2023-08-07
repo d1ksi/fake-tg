@@ -81,11 +81,13 @@ const ProfileSet = () => {
    };
 
    const handleSubmit = async () => {
-      const imgId = arrImg[0]._id;
-      if (input || imgId.length > 0) {
-         const userSet = await dispatch(actionPromise("User update", userUpsert(userId, input, imgId)));
+      const imgId = arrImg[0]?._id;
+      if (input || imgId?.length > 0) {
+         await dispatch(actionPromise("User update", userUpsert(userId, input, imgId)));
          setInput("");
          setArrImg([]);
+         navigate('/')
+      } else {
          navigate('/')
       }
    };

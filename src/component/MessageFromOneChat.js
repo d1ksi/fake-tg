@@ -47,7 +47,7 @@ const MessageChat = () => {
          const membersWithOutMe = member.filter((member) => member._id !== userId).map(({ _id }) => ({ _id }));
          console.log(membersWithOutMe)
          const out = await dispatch(actionPromise("Out from chat", deleteChat(chatId, membersWithOutMe)))
-         console.log(out)
+         // console.log(out)
          navigate('/');
       }
    };

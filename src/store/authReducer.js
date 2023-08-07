@@ -4,7 +4,7 @@ export function jwtDecode(token) {
       const secretPart = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
       return JSON.parse(secretPart);
    }
-   return null; // или другое значение по умолчанию, если token не является корректным
+   return null;
 }
 
 

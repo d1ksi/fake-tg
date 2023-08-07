@@ -11,6 +11,8 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { API_URL } from '../../constants/chatApiUrl';
 import { CircularProgress } from '@mui/material';
 import { PreviewImg } from '../createchat/Pre';
+import { addMessage } from '../../store/chatsReducer';
+import { useParams } from 'react-router';
 
 const MessageField = () => {
    const state = useSelector(state => state?.promise?.OneChatByID);
@@ -19,7 +21,9 @@ const MessageField = () => {
    const dispatch = useDispatch();
    const chat = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
 
+   const { chatId } = useParams();
 
+   const idOwnerAccount = useSelector(state => state?.auth?.payload?.sub?.id);
 
 
    const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +102,12 @@ const MessageField = () => {
    const handleSubmit = async () => {
       const imgId = arrImg.map(({ _id }) => ({ _id: _id }));
       if (input || imgId.length > 0) {
-         await dispatch(actionPromise("New message", messageCreate(chat._id, input, imgId)));
+         const dataMessage = await dispatch(actionPromise("New message", messageCreate(chat._id, input, imgId)));
+         const msg = dataMessage?.data?.MessageUpsert;
+         const idOwnerMessage = msg?.owner?._id;
+         if (idOwnerAccount === idOwnerMessage) {
+            dispatch(addMessage(msg, chatId));
+         }
          setInput("");
          setArrImg([]);
       }

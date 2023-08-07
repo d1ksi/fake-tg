@@ -10,6 +10,7 @@ import { CustomAlert } from './CustomAlert';
 import { chatCreate } from '../../API/gql';
 import { actionPromise } from '../../store/promiseReduser';
 import { resetButton } from "../../store/buttonReducer"
+import { addChat } from '../../store/chatsReducer';
 
 
 
@@ -51,6 +52,8 @@ const FieldCreate = () => {
       } else {
          const data = await dispatch(actionPromise("chatCreate", chatCreate(userData.map((user) => ({ _id: user._id })))));
          if (data.data && data.data.ChatUpsert) {
+            const chat = data?.data?.ChatUpsert;
+            dispatch(addChat(chat))
             setLogin("");
             setUserData([]);
             dispatch(resetButton());

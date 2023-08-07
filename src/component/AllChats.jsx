@@ -5,14 +5,12 @@ import { Link } from 'react-router-dom';
 import { resetButton } from '../store/buttonReducer';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 
-
-
 const AllChats = () => {
    const dispatch = useDispatch();
-   const chats = useSelector(state => state?.promise?.getUserChatById?.payload?.data?.UserFindOne?.chats);
-   // console.log("state chati", state)
-   // const chats = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
-
+   const { payload } = useSelector((state) => state.auth);
+   const user = payload?.sub;
+   const chats = useSelector(state => state?.chat);
+   const userAvatar = useSelector((state) => state?.promise?.getUserChatById?.payload?.data?.UserFindOne?.avatar?.url);
 
    const truncateString = (str, maxLength) => {
       if (str.length <= maxLength) {
@@ -21,24 +19,28 @@ const AllChats = () => {
       return str.substring(0, maxLength - 3) + '...';
    };
 
-
    const setBtn = () => {
       dispatch(resetButton());
    };
 
 
+
    const memoizedChats = useMemo(() => {
       return (
-         chats && chats.length ? (
-            chats.filter(chat => chat.members.length >= 2).slice().reverse().map(chat => {
+         chats && Object.keys(chats).length ? (
+            Object.values(chats).filter(chat => chat.members && chat.members.length >= 2).slice().reverse().map(chat => {
                let chatName;
                if (chat.members.length === 2) {
-                  chatName = chat.members[0].login;
+                  if (chat.members[0].login !== user.login) {
+                     chatName = chat.members[0].login;
+                  } else if (chat.members[0].login === user.login) {
+                     chatName = chat.members[1].login;
+                  }
                } else {
                   chatName = "Group";
                }
                let lastMessage;
-               if (chat.messages.length > 0) {
+               if (chat.messages && chat.messages.length > 0) {
                   const lastSms = chat.messages.length - 1;
                   const { owner, text } = chat.messages[lastSms];
                   lastMessage = `${owner.login}: ${text}`;
@@ -46,11 +48,20 @@ const AllChats = () => {
                } else {
                   lastMessage = "write 1st sms";
                }
-               let avatarUrl = chat.members.length === 2 ? chat.members[0]?.avatar?.url || "" : "";
+               let avatarUrl;
+               if (chat.members && chat.members.length === 2) {
+                  if (chat.members[0]?.avatar?.url !== userAvatar) {
+                     avatarUrl = chat.members[0]?.avatar?.url || "";
+                  } else if (chat.members[0]?.avatar?.url === userAvatar) {
+                     avatarUrl = chat.members[1]?.avatar?.url || "";
+                  }
+               } else {
+                  avatarUrl = '';
+               }
                return (
                   <Link key={chat._id} className="chats" to={`/${chat._id}`} onClick={setBtn}>
                      <div className='chat'>
-                        {chat.members.length > 2 ? (
+                        {chat.members && chat.members.length > 2 ? (
                            <div className="nochatimg">
                               <Diversity3Icon />
                            </div>
@@ -74,7 +85,6 @@ const AllChats = () => {
          )
       );
    }, [chats]);
-
 
 
 

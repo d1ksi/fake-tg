@@ -1,49 +1,23 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { API_URL } from '../../constants/chatApiUrl';
+import { useParams } from 'react-router';
 
-const Sms = () => {
-   const state = useSelector((state) => state?.promise?.OneChatByID);
+const Sms = ({ allMessage }) => {
    const { payload } = useSelector((state) => state.auth);
-   const chat = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
    const userId = payload?.sub?.id;
-   const dispatch = useDispatch();
+   // const chatId = useParams();
 
-   const allMessage = useSelector((state) => state?.chat[chat._id]?.messages);
+   // const allMessage = useSelector((state) => state?.chat[chatId]?.messages) || [];
 
    const bottomRef = useRef(null);
-
-   // useEffect(() => {
-   //    if (userPromise?.status === 'FULFILLED') {
-   //       (async () => {
-   //          const dataMessages = await dispatch(actionPromise('messageByChatId', getMessagesByChatId(chatId)));
-   //          const downloadMessages = dataMessages?.data?.MessageFind;
-   //          let uniqueMessages = [];
-   //          for (let i = 0; i < downloadMessages.length; i++) {
-   //             let unique = true;
-   //             for (let j = 0; j < messages.length; j++) {
-   //                if (messages[j]._id === downloadMessages[i]._id) {
-   //                   unique = false;
-   //                   break;
-   //                }
-   //             }
-   //             if (unique) {
-   //                uniqueMessages.push(downloadMessages[i]);
-   //             }
-   //          }
-   //          dispatch(addMessages(uniqueMessages, chatId));
-
-   //          dispatch(actionPromise('promiseCountMessagesByChatId', getCountMessagesByChatId(chatId)));
-   //       })();
-   //    }
-   // }, [chatId, dispatch, userPromise]);
-
 
    useEffect(() => {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
    }, [allMessage]);
+
 
    return (
       <>

@@ -13,7 +13,6 @@ export function actionFullRegister(login, password) {
             console.log(login, password)
          }
          if (data.errors && data.errors.length > 0) {
-            // Ошибка: пользователь уже существует
             alert('Пользователь уже зарегистрирован, выберите другой Login');
          }
       } catch (error) {
