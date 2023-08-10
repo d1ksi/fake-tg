@@ -29,6 +29,13 @@ const RegisterPageForm = () => {
       navigate('/login');
    };
 
+   const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+         event.preventDefault();
+         handleRegisterPage();
+      }
+   };
+
    return (
       <div className='registerformwraper'>
          <Stack spacing={2} sx={{ marginBottom: showAlert ? '20px' : 0, width: '200px' }}>
@@ -53,6 +60,7 @@ const RegisterPageForm = () => {
                onChange={(e) => setLogin(e.target.value)}
                label="Login"
                variant="outlined"
+               onKeyDown={handleKeyDown}
             />
             <TextField
                sx={{
@@ -68,6 +76,7 @@ const RegisterPageForm = () => {
                onChange={(e) => setPassword(e.target.value)}
                label="Password"
                variant="outlined"
+               onKeyDown={handleKeyDown}
             />
             <TextField
                sx={{
@@ -83,6 +92,7 @@ const RegisterPageForm = () => {
                onChange={(e) => setConfirmPassword(e.target.value)}
                label="Confirm Password"
                variant="outlined"
+               onKeyDown={handleKeyDown}
             />
          </Stack>
          <Box sx={{ margin: '20px 0px 10px 0px' }}>

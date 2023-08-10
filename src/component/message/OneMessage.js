@@ -1,16 +1,17 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { API_URL } from '../../constants/chatApiUrl';
-import { useParams } from 'react-router';
 
-const Sms = ({ allMessage }) => {
+
+
+const OneMessage = () => {
    const { payload } = useSelector((state) => state.auth);
    const userId = payload?.sub?.id;
-   // const chatId = useParams();
+   const chatId = useSelector(state => state?.promise?.OneChatByID?.payload?.data?.ChatFindOne?._id);
 
-   // const allMessage = useSelector((state) => state?.chat[chatId]?.messages) || [];
+   const allMessage = useSelector((state) => state?.chat[chatId]?.messages);
 
    const bottomRef = useRef(null);
 
@@ -21,7 +22,7 @@ const Sms = ({ allMessage }) => {
 
    return (
       <>
-         {allMessage && allMessage.length > 0 ? (
+         {allMessage && allMessage.length ? (
             <div>
                {allMessage.map((message) => (
                   <div className='onemessagewraper' key={message._id}>
@@ -33,9 +34,9 @@ const Sms = ({ allMessage }) => {
                                  <div>
                                     {message.media && message.media.length > 0 ? (
                                        <>
-                                          {message.media.map((photo, index) => (
-                                             <div key={index} className='chatsendphoto'>
-                                                <img src={`${API_URL}/${photo.url}`} className='chatmessageimg' alt='Error' />
+                                          {message.media.map((photo) => (
+                                             <div key={photo._id} className='chatsendphoto'>
+                                                <img src={`${API_URL}/${photo.url}`} className='chatmessageimg' />
                                              </div>
                                           ))}
                                        </>

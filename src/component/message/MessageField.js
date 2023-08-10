@@ -4,7 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { actionPromise } from '../../store/promiseReduser';
-import { messageCreate } from '../../API/gql';
+import { messageCreate, messagesById } from '../../API/gql';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -53,9 +53,8 @@ const MessageField = () => {
          });
 
          const data = await response.json();
+
          return data;
-
-
       } catch (error) {
          console.error("Error uploading file:", error);
       }
@@ -77,8 +76,6 @@ const MessageField = () => {
 
    };
 
-
-
    const dropHandler = async (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -86,24 +83,23 @@ const MessageField = () => {
       const files = e.dataTransfer.files;
       await handleFileUpload(files);
    };
+
    const fileUploadHandler = async (e) => {
       const files = e.target.files;
       await handleFileUpload(files);
    };
 
-
-
-
    const handleChange = (event) => {
       setInput(event.target.value);
    };
-
 
    const handleSubmit = async () => {
       const imgId = arrImg.map(({ _id }) => ({ _id: _id }));
       if (input || imgId.length > 0) {
          const dataMessage = await dispatch(actionPromise("New message", messageCreate(chat._id, input, imgId)));
-         const msg = dataMessage?.data?.MessageUpsert;
+         const msgID = dataMessage?.data?.MessageUpsert?._id;
+         const message = await dispatch(actionPromise("msg find", messagesById(msgID)));
+         const msg = message?.data?.MessageFindOne;
          const idOwnerMessage = msg?.owner?._id;
          if (idOwnerAccount === idOwnerMessage) {
             dispatch(addMessage(msg, chatId));
@@ -113,6 +109,12 @@ const MessageField = () => {
       }
    };
 
+   const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+         event.preventDefault();
+         handleSubmit();
+      }
+   };
 
    return (
       <div>
@@ -153,7 +155,12 @@ const MessageField = () => {
                   ></AddPhotoAlternateIcon>
                )}
             </div>
-            <input type="text" value={input} onChange={handleChange} className='msginput' />
+            <input
+               type="text"
+               value={input}
+               onChange={handleChange}
+               onKeyDown={handleKeyDown}
+               className='msginput' />
             <Stack spacing={2} direction="row">
                <Button variant="contained" sx={{
                   borderRadius: '50%', width: 40, height: 40, minWidth: 0,

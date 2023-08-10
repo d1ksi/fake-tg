@@ -17,13 +17,11 @@ const MessageForm = () => {
    const settingsIconClicked = useSelector((state) => state.button.settingsIconClicked);
    const chat = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
    const dispatch = useDispatch();
-   const [title, setTirle] = useState("");
-
-   // console.log(chat)
-
+   const [title, setTitle] = useState("");
    const avatarUrl = chat ? chat.avatar : '';
    const avatarMembers = chat && chat?.members && chat?.members?.length === 2 ? chat?.members[0]?.avatar?.url : '';
-
+   const chatList = useSelector((state) => state?.promise?.getUserChatById)
+   const chatListIsLoading = chatList?.status === 'FULFILLED';
 
    const newTitle = async () => {
       if (chat) {
@@ -38,43 +36,48 @@ const MessageForm = () => {
 
    return (
       <>
-         {settingsIconClicked ? (
-            <div className='setting'>
-               <div className='chatavatar'>
-                  {avatarUrl && avatarMembers ? (
-                     <div className="avatarchat">
-                        <img src={`${API_URL}/${avatarUrl}`} className="chatphoto" alt="" />
-                     </div>
-                  ) : avatarMembers ? (
-                     <div className="avatarchat">
-                        <img src={`${API_URL}/${avatarMembers}`} className="chatphoto" alt="" />
-                     </div>
-                  ) : (
-                     <div className="noimg">
-                        <Diversity3Icon sx={{ fontSize: "34px" }} />
-                     </div>
-                  )}
+         {chatListIsLoading ? (
+            settingsIconClicked ? (
+               <div className='setting'>
+                  <div className='chatavatar'>
+                     {avatarUrl && avatarMembers ? (
+                        <div className="avatarchat">
+                           <img src={`${API_URL}/${avatarUrl}`} className="chatphoto" alt="" />
+                        </div>
+                     ) : avatarMembers ? (
+                        <div className="avatarchat">
+                           <img src={`${API_URL}/${avatarMembers}`} className="chatphoto" alt="" />
+                        </div>
+                     ) : (
+                        <div className="noimg">
+                           <Diversity3Icon sx={{ fontSize: "34px" }} />
+                        </div>
+                     )}
+                  </div>
+                  {chat && chat.members && chat.members.length > 2 ? (
+                     <Box sx={{ display: "flex", alignItems: "center", marginLeft: "40px" }}>
+                        <TextField
+                           sx={{ width: '200px' }}
+                           type="text"
+                           value={title}
+                           onChange={(e) => setTitle(e.target.value)}
+                           label="Title"
+                           variant="outlined"
+                        />
+                        <DriveFileRenameOutlineIcon sx={{ cursor: "pointer", fontSize: "40px" }} onClick={newTitle} />
+                     </Box>
+                  ) : null}
+                  <UserInChat />
+                  <AddUserToChat />
+                  <Stack direction="row" spacing={2} sx={{ marginTop: "10px" }}>
+                     <Button variant="contained" onClick={setBtn}>Back to chat<ChatIcon sx={{ marginLeft: "5px", cursor: "pointer" }} /></Button>
+                  </Stack>
                </div>
-               {chat && chat.members && chat.members.length > 2 ? <Box sx={{ display: "flex", alignItems: "center", marginLeft: "40px" }}>
-                  <TextField
-                     sx={{ width: '200px' }}
-                     type="text"
-                     value={title}
-                     onChange={(e) => setTirle(e.target.value)}
-                     label="Title"
-                     variant="outlined"
-                  />
-                  <DriveFileRenameOutlineIcon sx={{ cursor: "pointer", fontSize: "40px" }} onClick={newTitle} />
-               </Box> : null}
-               < UserInChat />
-               < AddUserToChat />
-               <Stack direction="row" spacing={2} sx={{ marginTop: "10px" }}>
-                  <Button variant="contained" onClick={setBtn}>Back to chat<ChatIcon sx={{ marginLeft: "5px", cursor: "pointer" }} /></Button>
-               </Stack>
-            </div>
-         ) : < Message />}
+            ) : <Message />
+         ) : null}
       </>
    );
+
 }
 
 export default MessageForm;

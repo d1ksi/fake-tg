@@ -4,15 +4,13 @@ import { actionFullLogin } from "./actionFullLogin";
 
 
 export function actionFullRegister(login, password) {
-   return async () => {
+   return async (dispatch) => {
       try {
-         const data = await register(login, password);
-         console.log(data)
-         if (data?.data?.UserUpsert?.login) {
-            await actionFullLogin(login, password);
-            console.log(login, password)
+         const reg = await register(login, password);
+         if (reg?.data?.UserUpsert?.login) {
+            await dispatch(actionFullLogin(login, password));
          }
-         if (data.errors && data.errors.length > 0) {
+         if (register.errors && register.errors.length > 0) {
             alert('Пользователь уже зарегистрирован, выберите другой Login');
          }
       } catch (error) {

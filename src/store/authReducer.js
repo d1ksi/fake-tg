@@ -16,9 +16,8 @@ export const actionAuthLogout = () => ({ type: "AUTH_LOGOUT" });
 export function authReducer(state = {}, { type, token }) {
    if (type === "AUTH_LOGIN") {
       const payload = jwtDecode(token);
-      console.log(payload);
       localStorage.authToken = token;
-      // console.log(token);
+      window.location.href = '/';
       return { token, payload };
    }
    if (type === "AUTH_LOGOUT") {

@@ -19,4 +19,4 @@ export function actionFullLogin(login, password) {
          console.log(error);
       };
    }
-}
+} 

@@ -4,6 +4,7 @@ import { API_URL } from '../constants/chatApiUrl';
 import { Link } from 'react-router-dom';
 import { resetButton } from '../store/buttonReducer';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import { truncateString } from "../functional/truncateString";
 
 const AllChats = () => {
    const dispatch = useDispatch();
@@ -12,12 +13,6 @@ const AllChats = () => {
    const chats = useSelector(state => state?.chat);
    const userAvatar = useSelector((state) => state?.promise?.getUserChatById?.payload?.data?.UserFindOne?.avatar?.url);
 
-   const truncateString = (str, maxLength) => {
-      if (str.length <= maxLength) {
-         return str;
-      }
-      return str.substring(0, maxLength - 3) + '...';
-   };
 
    const setBtn = () => {
       dispatch(resetButton());
@@ -33,8 +28,10 @@ const AllChats = () => {
                if (chat.members.length === 2) {
                   if (chat.members[0].login !== user.login) {
                      chatName = chat.members[0].login;
+                     chatName = truncateString(chatName, 8);
                   } else if (chat.members[0].login === user.login) {
                      chatName = chat.members[1].login;
+                     chatName = truncateString(chatName, 8);
                   }
                } else {
                   chatName = "Group";
@@ -43,8 +40,9 @@ const AllChats = () => {
                if (chat.messages && chat.messages.length > 0) {
                   const lastSms = chat.messages.length - 1;
                   const { owner, text } = chat.messages[lastSms];
-                  lastMessage = `${owner.login}: ${text}`;
-                  lastMessage = truncateString(lastMessage, 18);
+                  const ownerLogin = truncateString(owner.login, 7)
+                  lastMessage = `${ownerLogin}: ${text}`;
+                  lastMessage = truncateString(lastMessage, 15);
                } else {
                   lastMessage = "write 1st sms";
                }

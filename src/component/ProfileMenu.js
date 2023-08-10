@@ -24,6 +24,9 @@ export default function BasicMenu() {
       setAnchorEl(event.currentTarget);
    };
    const handleClose = () => {
+      setAnchorEl(null);
+   };
+   const profileSet = () => {
       navigate(`/profile/${userId}`)
       setAnchorEl(null);
    };
@@ -60,7 +63,7 @@ export default function BasicMenu() {
                "aria-labelledby": "basic-button"
             }}
          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={profileSet}>Profile</MenuItem>
             <MenuItem onClick={Logout}>Logout</MenuItem>
          </Menu>
       </div>

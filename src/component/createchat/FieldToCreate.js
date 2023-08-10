@@ -92,7 +92,7 @@ const FieldCreate = () => {
             {userData.map((user) => (
                <div key={user._id} className="userwraper">
                   {user.avatar && user.avatar.url ? (
-                     <div className="useravatar"><img src={`${API_URL}/${user.avatar.url}`} className="userimg" /></div>
+                     <div className="avatar"><img src={`${API_URL}/${user.avatar.url}`} className="chatimg" /></div>
                   ) : (
                      <div className="nouserimg">{user.login.charAt(0).toUpperCase()}</div>
                   )}

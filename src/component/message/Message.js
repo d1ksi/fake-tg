@@ -1,12 +1,13 @@
 import MessageField from "./MessageField"
-import MsgFromChat from "./MsgFromChat"
-
+import OneMessage from './OneMessage';
 
 
 const Message = () => {
    return (
       <>
-         < MsgFromChat />
+         <div className='messagefromonechat'>
+            <OneMessage />
+         </div>
          < MessageField />
       </>
    )

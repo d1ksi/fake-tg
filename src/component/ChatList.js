@@ -11,11 +11,8 @@ const ChatList = () => {
    const dispatch = useDispatch();
    const { payload } = useSelector(state => state.auth);
    const state = useSelector(state => state?.promise?.getUserChatById);
-   // console.log("state", state)
    const isLoading = state?.status === 'PENDING';
 
-   // const chats = state?.payload?.data?.UserFindOne?.chats;
-   // console.log("chats", chats)
 
    useEffect(() => {
       (async () => {
