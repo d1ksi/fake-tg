@@ -13,11 +13,13 @@ const AddUserToChat = () => {
    const [login, setLogin] = useState("");
    const dispatch = useDispatch();
    const chat = useMemo(() => state?.payload?.data?.ChatFindOne, [state]);
-   // console.log(chat);
 
    const checkUser = async () => {
       if (chat && chat.members && chat._id) {
          const data = await dispatch(actionCheckUser(login));
+         if (data === null) {
+            alert("User not found")
+         }
          const newUserId = data?._id;
          const member = chat.members;
          const memberIds = member.map(({ _id }) => _id);
@@ -28,6 +30,8 @@ const AddUserToChat = () => {
          }
          const membersWithMe = memberIds.map((_id) => ({ _id }));
          await dispatch(actionPromise("Add user", deleteChat(chat._id, membersWithMe)));
+         alert("User add");
+         setLogin("");
       }
    };
 

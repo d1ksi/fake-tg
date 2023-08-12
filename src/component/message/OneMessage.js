@@ -4,21 +4,17 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { API_URL } from '../../constants/chatApiUrl';
 
-
-
 const OneMessage = () => {
    const { payload } = useSelector((state) => state.auth);
    const userId = payload?.sub?.id;
    const chatId = useSelector(state => state?.promise?.OneChatByID?.payload?.data?.ChatFindOne?._id);
 
    const allMessage = useSelector((state) => state?.chat[chatId]?.messages);
-
    const bottomRef = useRef(null);
 
    useEffect(() => {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
    }, [allMessage]);
-
 
    return (
       <>
@@ -56,4 +52,4 @@ const OneMessage = () => {
    );
 };
 
-export default Sms;
+export default OneMessage;

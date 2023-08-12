@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { API_URL } from '../constants/chatApiUrl';
 import { Link } from 'react-router-dom';
 import { resetButton } from '../store/buttonReducer';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import { truncateString } from "../functional/truncateString";
+
 
 const AllChats = () => {
    const dispatch = useDispatch();
@@ -13,12 +14,9 @@ const AllChats = () => {
    const chats = useSelector(state => state?.chat);
    const userAvatar = useSelector((state) => state?.promise?.getUserChatById?.payload?.data?.UserFindOne?.avatar?.url);
 
-
    const setBtn = () => {
       dispatch(resetButton());
    };
-
-
 
    const memoizedChats = useMemo(() => {
       return (
@@ -36,15 +34,19 @@ const AllChats = () => {
                } else {
                   chatName = "Group";
                }
-               let lastMessage;
+               let lastMessageOrImg;
                if (chat.messages && chat.messages.length > 0) {
                   const lastSms = chat.messages.length - 1;
-                  const { owner, text } = chat.messages[lastSms];
-                  const ownerLogin = truncateString(owner.login, 7)
-                  lastMessage = `${ownerLogin}: ${text}`;
-                  lastMessage = truncateString(lastMessage, 15);
+                  const { owner, text, media } = chat.messages[lastSms];
+                  let textInPhoto = '';
+                  if (media && media.length > 0) {
+                     textInPhoto = '📷 photo';
+                  }
+                  const ownerLogin = truncateString(owner.login, 5);
+                  lastMessageOrImg = `${ownerLogin}: ${textInPhoto || text}`;
+                  lastMessageOrImg = truncateString(lastMessageOrImg, 15);
                } else {
-                  lastMessage = "write 1st sms";
+                  lastMessageOrImg = "write 1st sms";
                }
                let avatarUrl;
                if (chat.members && chat.members.length === 2) {
@@ -72,7 +74,7 @@ const AllChats = () => {
                         )}
                         <div className='chattitleandlastmessage'>
                            <span>{chatName}</span>
-                           <span>{lastMessage}</span>
+                           <span>{lastMessageOrImg}</span>
                         </div>
                      </div>
                   </Link>

@@ -5,10 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteOneUser } from '../API/gql';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import { API_URL } from '../constants/chatApiUrl';
-import FaceRetouchingOffIcon from '@mui/icons-material/FaceRetouchingOff';
-import { useEffect } from 'react';
-
-
 
 const UserInChat = () => {
    const state = useSelector(state => state?.promise?.OneChatByID);
@@ -17,14 +13,14 @@ const UserInChat = () => {
    const userId = payload?.sub?.id;
    const dispatch = useDispatch();
 
-
    const handleDeleteUser = async (userIdToDelete) => {
       if (chat && chat.members) {
          const updatedMembers = chat.members.filter((member) => member._id !== userIdToDelete).map(({ _id }) => ({ _id }));
-         const deleteOneUserFromChat = await dispatch(actionPromise("Delete one user", deleteOneUser(chat._id, updatedMembers)))
-         console.log(deleteOneUserFromChat);
+         await dispatch(actionPromise("Delete one user", deleteOneUser(chat._id, updatedMembers)))
+         alert("User delete")
       }
    };
+
 
    return (
       <div>

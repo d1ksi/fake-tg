@@ -10,6 +10,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: #989898;
 }
 
 #root {
@@ -31,14 +32,14 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #808080;
+  /* background-color: #808080; */
   width: 100%;
   height: 100%;
 }
 
 .headerwraper {
   min-height: 5vh;
-  background-color: #989898;
+  /* background-color: #989898; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -60,7 +61,7 @@ body {
 
 
 .allchat {
-  background-color: #989898;
+  /* background-color: #989898; */
   min-width: 250px;
   height: calc(100vh - 90px);
   overflow-y: scroll;
@@ -77,9 +78,6 @@ body {
   width: 10px;
 }
 
-.allchat::-webkit-scrollbar-track {
-  background-color: #989898;
-}
 
 .allchat::-webkit-scrollbar-thumb {
   background-color: #808080;
@@ -149,7 +147,7 @@ body {
 }
 
 .messagemain {
-  background-color: #989898;
+  /* background-color: #989898; */
   height: calc(100vh - 90px);
   width: calc(100% - 250px - 220px);
   display: flex;
@@ -158,7 +156,7 @@ body {
 
 
 .messagemainwithcreate {
-  background-color: #989898;
+  /* background-color: #989898; */
   height: calc(100vh - 90px);
   max-height: 1066px;
   min-width: calc(100% - 250px);
@@ -169,7 +167,7 @@ body {
 
 .asidecreateactive {
   display: block;
-  background-color: #989898;
+  /* background-color: #989898; */
   height: 90vh;
   min-width: 220px;
 }
@@ -188,10 +186,6 @@ body {
 
 .userforcreate::-webkit-scrollbar {
   width: 10px;
-}
-
-.userforcreate::-webkit-scrollbar-track {
-  background-color: #989898;
 }
 
 .userforcreate::-webkit-scrollbar-thumb {
@@ -356,10 +350,6 @@ body {
   overflow-x: scroll;
 }
 
-.userinchat::-webkit-scrollbar-track {
-  background-color: #989898;
-}
-
 .userinchat::-webkit-scrollbar {
   width: 0px;
 }
@@ -383,10 +373,6 @@ body {
 .messagefromonechat {
   flex: 1 1 auto;
   overflow-x: scroll;
-}
-
-.messagefromonechat::-webkit-scrollbar-track {
-  background-color: #989898;
 }
 
 .messagefromonechat::-webkit-scrollbar {
@@ -469,6 +455,7 @@ body {
 .chatsendphoto {
   width: 200px;
   height: 180px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -562,7 +549,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: 40px;
-  background-color: #989898;
+  /* background-color: #989898; */
   height: calc(100vh - 90px);
   max-height: 1026px;
   min-width: calc(100% - 250px);
